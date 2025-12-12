@@ -29,14 +29,14 @@ function [Sh, Ih, Rh,Qh,Eh] = simulate_absir(Iv0, T, recovery_rate, quarantine_p
    Eh = zeros(dim, T); % Exposed history
    Qh = zeros(dim, T); % Quarantine history
 
+   % Compute infections with NB distribution
+   R0 = 2.6;
+   r = 0.16;
+   p = (r)/(R0+r);
+   pd_sse = makedist('NegativeBinomial', 'r', r, 'p', p);  % Negative Binomial distribution
+
    % Construct an "action" helper function
    function [In, Rn, En, Qn] = action(I, R, E, Q)
-
-       % Compute infections with NB distribution
-       R0 = 2.6;
-       r = 0.16;
-       p = (r)/(R0+r);
-       pd_sse = makedist('NegativeBinomial', 'r', r, 'p', p);  % Negative Binomial distribution
 
        % Compute random sample of infected individuals 
        Samples = sum(I);
