@@ -51,12 +51,9 @@ function [Sh, Ih, Rh,Qh,Eh] = simulate_absir(Iv0, T, recovery_rate, quarantine_p
        v_recover = rand(dim, 1) <= recovery_rate;
 
        %Compute which people can go from infected to quarantined
-       v_quarantine = rand(dim,1) <= quarantine_percent;
-
+       v_quarantine = (rand(dim,1) <= quarantine_percent);
        %Compute which people can go susceptible to exposed
-       v_exposed(1:new_infect_count,1) = 1;
-       v_exposed(new_infect_count+1:dim,1) = 0;
-       v_exposed = v_exposed(randperm(length(v_exposed)));
+       v_exposed = rand(dim,1) <= new_infect_count/dim;
      
        % Update all the stuff (._.)
        En = E | (v_exposed & ~I & ~E & ~R & ~Q);
